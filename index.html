@@ -197,8 +197,7 @@ input[type="text"]:focus { outline: none; border-color: var(--signal); box-shado
     return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
-  // Modèle F (2026-10-15) : polices et tons de la signature de Nicolas, aucun fond coloré,
-  // pour que les messageries en mode sombre puissent éclaircir le texte d'elles-mêmes.
+  // Modèle E (2026-10-15) : polices et tons de la signature de Nicolas, encart « Need help? » sur fond crème.
   // Tableaux et styles en ligne : seule forme rendue pareil dans Spark, Gmail, Apple Mail et Outlook.
   function signatureHtml() {
     var name = esc(nameEl.value.trim() || nameEl.placeholder);
@@ -217,9 +216,9 @@ input[type="text"]:focus { outline: none; border-color: var(--signal); box-shado
   '</tr></table>' +
 '</td></tr>' +
 '<tr><td style="padding:0 0 14px 0;">' +
-  '<table cellpadding="0" cellspacing="0" border="0" width="480" style="border-collapse:collapse;width:480px;"><tr>' +
-    '<td style="' + sans + 'border-top:1px solid #e5e5e5;padding:10px 0 0 0;font-size:11px;line-height:18px;color:#808080;">' +
-      '<b style="color:#12312b;">Need help?</b> Write to <a href="mailto:host@winalist.com" style="color:#12312b;font-weight:bold;">host@winalist.com</a> for any question about your account or your bookings.' +
+  '<table cellpadding="0" cellspacing="0" border="0" width="480" style="border-collapse:separate;width:480px;"><tr>' +
+    '<td bgcolor="#f1f4e0" style="' + sans + 'background-color:#f1f4e0;border-radius:6px;padding:10px 14px;font-size:11px;line-height:18px;color:#2c3a20;">' +
+      '<b>Need help?</b> Write to <a href="mailto:host@winalist.com" style="color:#12312b;font-weight:bold;">host@winalist.com</a> for any question about your account or your bookings.' +
     '</td>' +
   '</tr></table>' +
 '</td></tr>' +
