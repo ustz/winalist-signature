@@ -217,7 +217,7 @@ input[type="text"]:focus { outline: none; border-color: var(--signal); box-shado
   // Modèle E (2026-10-15) : polices et tons de la signature de Nicolas, encart « Need help? » sur fond crème.
   // Tableaux et styles en ligne : seule forme rendue pareil dans Spark, Gmail, Apple Mail et Outlook.
   // Mode « team » = signature de contact@winalist.com : « The Winalist Team », sans ligne de poste,
-  // encart qui renvoie les hôtes vers host@ et les voyageurs vers helpdesk@ (décision d'Ulysse du 2026-10-15).
+  // encart qui renvoie les hôtes vers host@ et les voyageurs vers booking@ (décision d'Ulysse du 2026-10-15).
   function signatureHtml() {
     var team = mode === "team";
     var name = team ? "The Winalist Team" : esc(nameEl.value.trim() || nameEl.placeholder);
@@ -225,7 +225,7 @@ input[type="text"]:focus { outline: none; border-color: var(--signal); box-shado
     var sans = "font-family:Montserrat,Arial,sans-serif;";
     var link = '<a href="mailto:';
     var help = team
-      ? '<b>Need help?</b> Hosts: ' + link + 'host@winalist.com" style="color:#12312b;font-weight:bold;">host@winalist.com</a> &middot; Travelers: ' + link + 'helpdesk@winalist.com" style="color:#12312b;font-weight:bold;">helpdesk@winalist.com</a>'
+      ? '<b>Need help?</b> Hosts: ' + link + 'host@winalist.com" style="color:#12312b;font-weight:bold;">host@winalist.com</a> &middot; Travelers: ' + link + 'booking@winalist.com" style="color:#12312b;font-weight:bold;">booking@winalist.com</a>'
       : '<b>Need help?</b> Write to ' + link + 'host@winalist.com" style="color:#12312b;font-weight:bold;">host@winalist.com</a> for any question about your account or your bookings.';
     return '' +
 '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">' +
