@@ -84,6 +84,8 @@ input[type="text"]:focus { outline: none; border-color: var(--signal); box-shado
 .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--signal-ring); }
 .preview-label { font-size: 13px; font-weight: 500; color: var(--muted-foreground); margin-bottom: 8px; }
 .preview { border: 1px solid var(--hairline); border-radius: var(--radius); padding: 24px; overflow-x: auto; background: #ffffff; }
+/* Aperçu : un lien sans style propre s'affiche comme dans une messagerie, pas dans la couleur de la page */
+#signature > a { color: #1155cc; }
 .steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 32px; }
 @media (max-width: 820px) { .steps { grid-template-columns: minmax(0, 1fr); } }
 .steps h3 { font-size: 14px; font-weight: 600; margin: 0 0 6px; }
@@ -216,8 +218,9 @@ input[type="text"]:focus { outline: none; border-color: var(--signal); box-shado
 
   // Modèle E (2026-10-15) : polices et tons de la signature de Nicolas, encart « Need help? » sur fond crème.
   // Tableaux et styles en ligne : seule forme rendue pareil dans Spark, Gmail, Apple Mail et Outlook.
-  // Mode « team » = signature de contact@winalist.com : « The Winalist Team », sans ligne de poste,
-  // encart qui renvoie les hôtes vers host@ et les voyageurs vers booking@ (décision d'Ulysse du 2026-10-15).
+  // Mode « team » = signature de contact@winalist.com : ni picto ni bloc d'identité, juste « The Winalist Team »
+  // et le lien winalist.com en texte simple, dans la police du message (demande d'Ulysse du 2026-10-15) ;
+  // encart qui renvoie les hôtes vers host@ et les voyageurs vers booking@.
   function signatureHtml() {
     var team = mode === "team";
     var name = team ? "The Winalist Team" : esc(nameEl.value.trim() || nameEl.placeholder);
@@ -227,8 +230,12 @@ input[type="text"]:focus { outline: none; border-color: var(--signal); box-shado
     var help = team
       ? '<b>Need help?</b> Hosts: ' + link + 'host@winalist.com" style="color:#12312b;font-weight:bold;">host@winalist.com</a> &middot; Travelers: ' + link + 'booking@winalist.com" style="color:#12312b;font-weight:bold;">booking@winalist.com</a>'
       : '<b>Need help?</b> Write to ' + link + 'host@winalist.com" style="color:#12312b;font-weight:bold;">host@winalist.com</a> for any question about your account or your bookings.';
-    return '' +
+    var identity = team
+      ? 'The Winalist Team<br><a href="https://www.winalist.com">winalist.com</a><br><br>'
+      : '';
+    return identity +
 '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">' +
+(team ? '' :
 '<tr><td style="padding:0 0 14px 0;">' +
   '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr>' +
     '<td width="56" valign="middle" style="padding:0 16px 0 0;"><img src="' + BASE + '/sign/picto.png" width="56" height="56" alt="Winalist" style="display:block;border:0;width:56px;height:56px;"></td>' +
@@ -238,7 +245,7 @@ input[type="text"]:focus { outline: none; border-color: var(--signal); box-shado
       '<div style="' + sans + 'font-size:11px;line-height:16px;padding-top:3px;"><a href="https://www.winalist.com" style="color:#808080;text-decoration:none;">winalist.com</a></div>' +
     '</td>' +
   '</tr></table>' +
-'</td></tr>' +
+'</td></tr>') +
 '<tr><td style="padding:0 0 14px 0;">' +
   '<table cellpadding="0" cellspacing="0" border="0" width="480" style="border-collapse:separate;width:480px;"><tr>' +
     '<td bgcolor="#f1f4e0" style="' + sans + 'background-color:#f1f4e0;border-radius:6px;padding:10px 14px;font-size:11px;line-height:18px;color:#2c3a20;">' + help + '</td>' +
