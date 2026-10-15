@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Winalist · Signature mail</title>
+<link rel="icon" href="sign/picto.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Valeurs reprises de design-system/tokens.css (uOS UI v0.3.2 « Graphite »), preset accent-wine */
+:root {
+  --background: #ffffff;
+  --chrome: #f5f5f6;
+  --muted-foreground: #63636e;
+  --fill: rgb(0 0 0 / 4%);
+  --fill-strong: rgb(0 0 0 / 7%);
+  --foreground: #18181b;
+  --foreground-2: #3f3f46;
+  --hairline: #ededf0;
+  --border: #e2e2e6;
+  --border-strong: #cfcfd6;
+  --primary: #18181b;
+  --primary-hover: #303036;
+  --primary-foreground: #ffffff;
+  --signal: #b91c1c;
+  --signal-ring: rgb(185 28 28 / 24%);
+  --success: #16a34a;
+  --panel-border: rgb(0 0 0 / 7%);
+  --inverse: #18181b;
+  --inverse-foreground: #ffffff;
+  --radius: 8px;
+  --radius-panel: 12px;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--chrome); color: var(--foreground);
+  font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px; line-height: 20px;
+}
+a { color: var(--signal); }
+.shell { max-width: 1040px; margin: 0 auto; padding: 24px 16px 48px; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 56px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
+.brand img { width: 28px; height: 28px; display: block; }
+.lang { display: inline-flex; background: var(--fill); border-radius: var(--radius); padding: 2px; height: 28px; }
+.lang button {
+  border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 500; color: var(--foreground-2);
+  height: 24px; padding: 0 10px; border-radius: 6px; cursor: pointer; white-space: nowrap;
+}
+.lang button[aria-pressed="true"] { background: var(--fill-strong); color: var(--foreground); }
+.panel { background: var(--background); border: 1px solid var(--panel-border); border-radius: var(--radius-panel); }
+.section { padding: 24px; }
+.section + .section { border-top: 1px solid var(--hairline); }
+h1 { font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 4px; }
+h2 { font-size: 15px; line-height: 24px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 12px; }
+.lead { color: var(--muted-foreground); margin: 0; }
+.grid { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 32px; }
+@media (max-width: 820px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+label { font-weight: 500; }
+.hint { font-size: 13px; color: var(--muted-foreground); }
+input[type="text"] {
+  height: 36px; padding: 0 12px; border: 1px solid var(--border); border-radius: var(--radius);
+  font: inherit; color: var(--foreground); background: var(--background); width: 100%;
+}
+input[type="text"]:hover { border-color: var(--border-strong); }
+input[type="text"]:focus { outline: none; border-color: var(--signal); box-shadow: 0 0 0 3px var(--signal-ring); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.btn {
+  height: 36px; padding: 0 14px; border-radius: var(--radius); border: 0; cursor: pointer;
+  font: inherit; font-weight: 500; white-space: nowrap; flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn svg { width: 16px; height: 16px; stroke-width: 1.75; }
+.btn-primary { background: var(--primary); color: var(--primary-foreground); }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-tonal { background: var(--fill); color: var(--foreground); }
+.btn-tonal:hover { background: var(--fill-strong); }
+.btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--signal-ring); }
+.preview-label { font-size: 13px; font-weight: 500; color: var(--muted-foreground); margin-bottom: 8px; }
+.preview { border: 1px solid var(--hairline); border-radius: var(--radius); padding: 24px; overflow-x: auto; background: #ffffff; }
+.closing { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #1f2523; margin: 0 0 18px; }
+.steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 32px; }
+@media (max-width: 820px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+.steps h3 { font-size: 14px; font-weight: 600; margin: 0 0 6px; }
+.steps ol { margin: 0; padding-left: 20px; color: var(--foreground-2); }
+.steps li + li { margin-top: 4px; }
+.note { margin-top: 20px; font-size: 13px; color: var(--muted-foreground); }
+.toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(16px); opacity: 0;
+  background: var(--inverse); color: var(--inverse-foreground); padding: 10px 14px; border-radius: var(--radius);
+  font-weight: 500; transition: opacity .15s, transform .15s; pointer-events: none;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 16%); display: flex; align-items: center; gap: 8px;
+}
+.toast .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.footer { margin-top: 16px; font-size: 13px; color: var(--muted-foreground); text-align: center; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand"><img src="sign/picto.png" alt=""><span>Winalist</span></div>
+    <div class="lang" role="group" aria-label="Langue / Language">
+      <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <main class="panel">
+    <div class="section">
+      <h1 data-t="title"></h1>
+      <p class="lead" data-t="lead"></p>
+    </div>
+
+    <div class="section grid">
+      <form id="form" autocomplete="on" onsubmit="return false">
+        <div class="field">
+          <label for="name" data-t="nameLabel"></label>
+          <input type="text" id="name" name="name" autocomplete="name" data-ph="namePh">
+        </div>
+        <div class="field">
+          <label for="role" data-t="roleLabel"></label>
+          <input type="text" id="role" name="role" autocomplete="organization-title" data-ph="rolePh">
+          <span class="hint" data-t="roleHint"></span>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="copy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span data-t="copy"></span>
+          </button>
+          <button type="button" class="btn btn-tonal" id="copyHtml">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span data-t="copyHtml"></span>
+          </button>
+        </div>
+      </form>
+
+      <div>
+        <div class="preview-label" data-t="preview"></div>
+        <div class="preview">
+          <p class="closing" data-t="closing"></p>
+          <div id="signature"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 data-t="howTitle"></h2>
+      <div class="steps" id="steps"></div>
+      <p class="note" data-t="note"></p>
+    </div>
+  </main>
+
+  <p class="footer" data-t="footer"></p>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span class="dot" aria-hidden="true"></span><span id="toastText"></span></div>
+
+<script>
+(function () {
+  // Les images de la signature doivent avoir une adresse publique complète :
+  // celle du site en ligne, ou l'adresse de production quand la page est ouverte en local.
+  var PROD = "https://ustz.github.io/winalist-signature";
+  var BASE = /^https?:$/.test(location.protocol) ? location.origin + location.pathname.replace(/\/[^\/]*$/, "") : PROD;
+
+  var T = {
+    fr: {
+      title: "Votre signature mail Winalist",
+      lead: "Saisissez votre nom et votre rôle, copiez la signature, puis collez-la dans votre messagerie. Le modèle est le même pour toute l'équipe.",
+      nameLabel: "Prénom et nom", namePh: "Anna Lisa Cascia",
+      roleLabel: "Rôle", rolePh: "Partner Relations Manager",
+      roleHint: "En anglais. « @ Winalist » est ajouté automatiquement.",
+      copy: "Copier la signature", copyHtml: "Copier le code HTML",
+      preview: "Aperçu", closing: "Bien cordialement,",
+      howTitle: "Installer la signature",
+      note: "Pas de numéro de téléphone dans la signature : toutes les demandes des hôtes passent par host@winalist.com. Si le collage perd les images, utilisez « Copier le code HTML » quand votre messagerie accepte du HTML.",
+      footer: "Une question sur ce générateur : écrivez à Ulysse.",
+      copied: "Signature copiée", copiedHtml: "Code HTML copié", copyFail: "Copie impossible : sélectionnez l'aperçu puis ⌘C",
+      clients: [
+        ["Spark (Mac, iPhone, Android)", ["Ouvrez Réglages puis Signatures.", "Créez une signature avec +.", "Collez (⌘V) dans le champ, puis associez-la à votre compte Winalist."]],
+        ["Gmail (navigateur)", ["Roue dentée, puis « Voir tous les paramètres ».", "Onglet Général, rubrique Signature : « Créer ».", "Collez, choisissez-la pour les nouveaux messages et les réponses.", "« Enregistrer les modifications » en bas de page."]],
+        ["Apple Mail", ["Mail, puis Réglages, puis Signatures.", "Choisissez votre compte et ajoutez une signature avec +.", "Décochez « Toujours utiliser ma police par défaut ».", "Collez dans le champ de droite."]],
+        ["Outlook", ["Paramètres, puis Comptes (ou Courrier), puis Signatures.", "Nouvelle signature, collez.", "Choisissez-la par défaut pour les nouveaux messages et les réponses, puis enregistrez."]]
+      ]
+    },
+    en: {
+      title: "Your Winalist email signature",
+      lead: "Enter your name and role, copy the signature, then paste it into your email app. The template is the same for the whole team.",
+      nameLabel: "Full name", namePh: "Anna Lisa Cascia",
+      roleLabel: "Role", rolePh: "Partner Relations Manager",
+      roleHint: "In English. “@ Winalist” is added automatically.",
+      copy: "Copy signature", copyHtml: "Copy HTML code",
+      preview: "Preview", closing: "Best regards,",
+      howTitle: "Install the signature",
+      note: "No phone number in the signature: every host request goes to host@winalist.com. If pasting drops the images, use “Copy HTML code” when your email app accepts HTML.",
+      footer: "Questions about this generator: write to Ulysse.",
+      copied: "Signature copied", copiedHtml: "HTML code copied", copyFail: "Copy failed: select the preview and press ⌘C",
+      clients: [
+        ["Spark (Mac, iPhone, Android)", ["Open Settings, then Signatures.", "Create a signature with +.", "Paste (⌘V) into the field, then assign it to your Winalist account."]],
+        ["Gmail (browser)", ["Gear icon, then “See all settings”.", "General tab, Signature section: “Create new”.", "Paste, then select it for new emails and replies.", "Click “Save changes” at the bottom of the page."]],
+        ["Apple Mail", ["Mail, then Settings, then Signatures.", "Pick your account and add a signature with +.", "Untick “Always match my default message font”.", "Paste into the right-hand field."]],
+        ["Outlook", ["Settings, then Accounts (or Mail), then Signatures.", "New signature, paste.", "Set it as default for new messages and replies, then save."]]
+      ]
+    }
+  };
+
+  var lang = (navigator.language || "fr").slice(0, 2) === "fr" ? "fr" : "en";
+  try { var saved = localStorage.getItem("wl-sig-lang"); if (saved === "fr" || saved === "en") lang = saved; } catch (e) {}
+
+  var nameEl = document.getElementById("name");
+  var roleEl = document.getElementById("role");
+  try {
+    nameEl.value = localStorage.getItem("wl-sig-name") || "";
+    roleEl.value = localStorage.getItem("wl-sig-role") || "";
+  } catch (e) {}
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  // HTML de la signature : tableaux et styles en ligne, seule forme rendue pareil dans Spark, Gmail, Apple Mail et Outlook.
+  function signatureHtml() {
+    var t = T[lang];
+    var name = esc(nameEl.value.trim() || t.namePh);
+    var role = esc(roleEl.value.trim() || t.rolePh);
+    var font = "font-family:Arial,Helvetica,sans-serif;";
+    return '' +
+'<table cellpadding="0" cellspacing="0" border="0" style="' + font + 'border-collapse:collapse;">' +
+'<tr><td style="padding:0 0 14px 0;">' +
+  '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr>' +
+    '<td width="48" valign="middle" style="padding:0 14px 0 0;"><img src="' + BASE + '/sign/picto.png" width="48" height="48" alt="Winalist" style="display:block;border:0;width:48px;height:48px;"></td>' +
+    '<td valign="middle" style="' + font + '">' +
+      '<div style="font-size:16px;line-height:20px;font-weight:bold;color:#12312b;">' + name + '</div>' +
+      '<div style="font-size:13px;line-height:19px;color:#5a625f;">' + role + ' @ Winalist &middot; <a href="https://www.winalist.com" style="color:#12312b;text-decoration:none;">winalist.com</a></div>' +
+    '</td>' +
+  '</tr></table>' +
+'</td></tr>' +
+'<tr><td style="padding:0 0 14px 0;">' +
+  '<table cellpadding="0" cellspacing="0" border="0" width="480" style="border-collapse:separate;width:480px;"><tr>' +
+    '<td bgcolor="#f1f4e0" style="' + font + 'background-color:#f1f4e0;border-radius:6px;padding:10px 14px;font-size:12px;line-height:19px;color:#2c3a20;">' +
+      '<b>Need help?</b> Write to <a href="mailto:host@winalist.com" style="color:#12312b;font-weight:bold;">host@winalist.com</a> for any question about your account or your bookings.' +
+    '</td>' +
+  '</tr></table>' +
+'</td></tr>' +
+'<tr><td>' +
+  '<a href="https://www.winalist.com" style="text-decoration:none;"><img src="' + BASE + '/sign/banner-en.gif" width="480" height="120" alt="Winalist — Plan your next wine &amp; spirits adventure." style="display:block;border:0;width:480px;height:120px;border-radius:6px;"></a>' +
+'</td></tr>' +
+'</table>';
+  }
+
+  var sigEl = document.getElementById("signature");
+  function render() {
+    sigEl.innerHTML = signatureHtml();
+    try {
+      localStorage.setItem("wl-sig-name", nameEl.value);
+      localStorage.setItem("wl-sig-role", roleEl.value);
+    } catch (e) {}
+  }
+
+  function applyLang() {
+    var t = T[lang];
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-t]").forEach(function (el) { el.textContent = t[el.getAttribute("data-t")]; });
+    document.querySelectorAll("[data-ph]").forEach(function (el) { el.placeholder = t[el.getAttribute("data-ph")]; });
+    document.querySelectorAll(".lang button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.lang === lang)); });
+    var steps = document.getElementById("steps");
+    steps.innerHTML = "";
+    t.clients.forEach(function (c) {
+      var box = document.createElement("div");
+      var h = document.createElement("h3"); h.textContent = c[0]; box.appendChild(h);
+      var ol = document.createElement("ol");
+      c[1].forEach(function (s) { var li = document.createElement("li"); li.textContent = s; ol.appendChild(li); });
+      box.appendChild(ol); steps.appendChild(box);
+    });
+    render();
+  }
+
+  var toast = document.getElementById("toast"), toastTimer;
+  function notify(msg) {
+    document.getElementById("toastText").textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 2200);
+  }
+
+  // Copie avec la mise en forme : le collage dans une messagerie donne la signature, pas son code.
+  function copyRich() {
+    var html = signatureHtml();
+    var text = sigEl.innerText;
+    if (navigator.clipboard && window.ClipboardItem) {
+      navigator.clipboard.write([new ClipboardItem({
+        "text/html": new Blob([html], { type: "text/html" }),
+        "text/plain": new Blob([text], { type: "text/plain" })
+      })]).then(function () { notify(T[lang].copied); }, fallbackRich);
+    } else { fallbackRich(); }
+  }
+  function fallbackRich() {
+    var range = document.createRange();
+    range.selectNodeContents(sigEl);
+    var sel = window.getSelection();
+    sel.removeAllRanges(); sel.addRange(range);
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) {}
+    sel.removeAllRanges();
+    notify(ok ? T[lang].copied : T[lang].copyFail);
+  }
+  function copyHtml() {
+    var html = signatureHtml();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(html).then(function () { notify(T[lang].copiedHtml); }, function () { notify(T[lang].copyFail); });
+    } else { notify(T[lang].copyFail); }
+  }
+
+  nameEl.addEventListener("input", render);
+  roleEl.addEventListener("input", render);
+  document.getElementById("copy").addEventListener("click", copyRich);
+  document.getElementById("copyHtml").addEventListener("click", copyHtml);
+  document.querySelectorAll(".lang button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      lang = b.dataset.lang;
+      try { localStorage.setItem("wl-sig-lang", lang); } catch (e) {}
+      applyLang();
+    });
+  });
+
+  applyLang();
+})();
+</script>
+</body>
+</html>
